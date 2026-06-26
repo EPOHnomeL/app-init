@@ -101,9 +101,18 @@ git clone https://github.com/EPOHnomeL/knowledge-bank /tmp/kb
 cp -r /tmp/kb/scaffold-knowledge-bank /tmp/kb/populate-knowledge-bank ~/.claude/skills/
 ```
 
-This kit ships with knowledge‑bank already in [`.claude/skills/`](.claude/skills/) and ponytail
-already enabled in [`.claude/settings.json`](.claude/settings.json), so a fresh clone of the kit
-is ready to go.
+This kit ships with knowledge‑bank already in [`.claude/skills/`](.claude/skills/), so a fresh clone
+of the kit is ready to go.
+
+### Optional skills (not baked into the kit — opt in per project)
+
+These are **not** kit defaults. They're installed on this machine and documented here so you can turn
+them on per project when you want them — nothing is forced on a fresh copy.
+
+| Skill | What it adds | Turn it on |
+| --- | --- | --- |
+| **ponytail** ([repo](https://github.com/DietrichGebert/ponytail)) | "Lazy senior dev" guardrails — YAGNI, stdlib‑first, the laziest solution that works | `/plugin marketplace add DietrichGebert/ponytail` then `/plugin install ponytail@ponytail`, or add the `ponytail@ponytail` block to `.claude/settings.json` (this repo already has it; delete the block to opt a copy out) |
+| **ui-ux-pro-max** | UI/UX design intelligence — styles, palettes, font pairings, shadcn/Tailwind patterns. Handy for a Tailwind T3 app | Already at user scope (`~/.claude/skills/ui-ux-pro-max`) so it's globally available; to make a project self‑contained, copy it into that project's `.claude/skills/` |
 
 ---
 
