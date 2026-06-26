@@ -15,9 +15,15 @@ for t in node pnpm git; do
   if command -v "$t" >/dev/null 2>&1; then ok "$t -> $($t --version 2>&1 | head -n1)"
   else warn "$t not found. Install it first (pnpm: 'corepack enable pnpm')."; fi
 done
+# Required later: gh (private remote, Step 8), vercel (deploy + env sync, Step 6).
+for t in gh vercel; do
+  if command -v "$t" >/dev/null 2>&1; then ok "$t present"
+  else warn "$t not found. Needed later (gh: repo create, Step 8 / vercel: link + env sync, Step 6)."; fi
+done
 
-cyan 1 "git init (main)"
+cyan 1 "git init (main) + pin Node version"
 if [ -d .git ]; then ok "git already initialized"; else git init -b main >/dev/null; ok "initialized on 'main'"; fi
+if [ -f .nvmrc ]; then ok ".nvmrc already present"; else node -v 2>&1 | head -n1 | tr -d '\n' > .nvmrc; ok ".nvmrc pinned -> $(cat .nvmrc)"; fi
 
 cyan 2 "Verifying skills are present"
 for s in scaffold-knowledge-bank populate-knowledge-bank; do
@@ -33,7 +39,9 @@ printf '\n\033[35mMechanical setup done. Now, inside Claude Code, run in order:\
 cat <<'EOF'
   /setup-matt-pocock-skills    (Step 3 — issue tracker + label vocab + doc layout)
   /grill-with-docs             (Step 4 — decides Convex vs Supabase + auth; writes CONTEXT.md + ADRs)
-  # ...scaffold per the DB ADR (Step 5: pnpm create t3-app@latest .)...
-  /scaffold-knowledge-bank     (Step 6)
+  # ...scaffold per the DB ADR + add Vitest + .env.example (Step 5: pnpm create t3-app@latest .)...
+  # ...vercel link + env sync (+ convex deploy build step on the Convex branch) (Step 6)...
+  /scaffold-knowledge-bank     (Step 7)
   /populate-knowledge-bank
+  # ...git commit, then: gh repo create --source . --private --push --remote origin (Step 8)...
 EOF
