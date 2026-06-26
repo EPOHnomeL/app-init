@@ -68,6 +68,22 @@ The DB choice has a real consequence, which is *why* it's grilled rather than pi
 > knowledge‑bank **requires** `setup-matt-pocock-skills` + `grill-with-docs` to be present —
 > which is exactly why they run earlier in the sequence below.
 
+### Invocation matrix — who can trigger what
+
+Several Matt Pocock skills are locked with `disable-model-invocation: true`: **Claude cannot trigger
+them**, only the user typing the slash command can. Plan the workflow around this:
+
+| Skill | AI can invoke? | How it runs in this kit |
+| --- | --- | --- |
+| `scaffold-knowledge-bank`, `populate-knowledge-bank`, `tdd`, `learn`, ponytail (`ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt`) | **yes** | Claude invokes directly |
+| `setup-matt-pocock-skills` | no (locked) | prompt-driven → Claude executes the process manually, **or** user types it |
+| `grill-with-docs`, `grill-me` | no (locked) | **user types the slash command**, or Claude drives an equivalent relentless interview and writes the ADRs/CONTEXT.md itself |
+| `to-prd`, `to-issues`, `triage`, `prototype`, `handoff`, `improve-codebase-architecture` | no (locked) | user types the slash command |
+
+Rule baked into [`CLAUDE.md`](CLAUDE.md): if a needed skill is locked, prompt the user to invoke it
+step by step, or (when it's prompt-driven and safe) execute its documented process directly — never
+strip the lock from the user's global skills.
+
 ### Installing the skills
 
 ```sh
